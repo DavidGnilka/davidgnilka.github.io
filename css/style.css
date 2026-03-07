@@ -25,3 +25,13 @@ background-color: #ffeaa7;
 .controls {
 margin-bottom: 15px;
 }
+
+.active {
+background-color: #ffeaa7;
+font-weight: bold;
+}
+
+.turnInfo {
+margin-top: 10px;
+font-size: 18px;
+}
