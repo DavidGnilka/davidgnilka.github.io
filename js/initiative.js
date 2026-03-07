@@ -1,5 +1,10 @@
 import { loadJSON } from "./loader.js";
 
+const supabaseUrl = "https://YOURPROJECT.supabase.co"
+const supabaseKey = "YOUR_PUBLIC_ANON_KEY"
+
+const supabase = window.supabase.createClient(supabaseUrl, supabaseKey)
+
 const tableBody = document.querySelector("#tracker tbody");
 
 const turnDisplay = document.getElementById("currentTurn");
@@ -8,14 +13,14 @@ const roundDisplay = document.getElementById("round");
 let turnIndex = -1;
 let round = 1;
 
-function addRow(data = { name: "", initiative: 0, hp: 0, status: "" }) {
+function addRow(data = { name: "", hp: 0 }) {
 
     const row = document.createElement("tr");
 
     row.innerHTML = `
 <td contenteditable="true">${data.name}</td>
 
-<td contenteditable="true">${data.initiative}</td>
+<td contenteditable="true">0</td>
 
 <td class="hpCell">
 <button class="hpBtn" data-dmg="-10">-10</button>
@@ -29,7 +34,7 @@ function addRow(data = { name: "", initiative: 0, hp: 0, status: "" }) {
 <button class="hpBtn" data-dmg="10">+10</button>
 </td>
 
-<td contenteditable="true">${data.status}</td>
+<td contenteditable="true"></td>
 `;
 
     tableBody.appendChild(row);
@@ -40,18 +45,14 @@ function addRow(data = { name: "", initiative: 0, hp: 0, status: "" }) {
 
 async function loadPlayers() {
 
-    const players = await loadJSON("/data/players.json");
+    const { data, error } = await supabase
+        .from("players")
+        .select("*");
 
-    players.forEach(player => {
-
-        addRow({
-            name: player.name,
-            initiative: 0,
-            hp: player.hp,
-            status: ""
-        });
-
-    });
+    data.forEach(p => addRow({
+        name: p.name,
+        hp: p.hp
+    }));
 
 }
 
@@ -122,12 +123,13 @@ function setupHPButtons(row) {
         btn.onclick = () => {
 
             let hp = parseInt(hpValue.textContent) || 0;
-
             hp += parseInt(btn.dataset.dmg);
 
             if (hp < 0) hp = 0;
 
             hpValue.textContent = hp;
+
+            row.classList.add("changed");
 
         };
 
@@ -135,6 +137,29 @@ function setupHPButtons(row) {
 
 }
 
+async function endEncounter() {
+
+    const changedRows = [...document.querySelectorAll("tr.changed")];
+
+    for (const row of changedRows) {
+
+        const name = row.children[0].textContent.trim();
+        const hp = parseInt(row.querySelector(".hpValue").textContent) || 0;
+
+        await supabase
+            .from("players")
+            .update({ hp: hp })
+            .eq("name", name);
+
+        row.classList.remove("changed");
+
+    }
+
+    alert("HP gespeichert");
+
+}
+
+document.getElementById("endEncounter").onclick = endEncounter;
 document.getElementById("loadPlayers").onclick = loadPlayers;
 document.getElementById("addActor").onclick = () => addRow();
 document.getElementById("sortInit").onclick = sortInitiative;
