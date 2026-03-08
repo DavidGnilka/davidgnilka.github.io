@@ -32,15 +32,25 @@
 
             <h3>Monster hinzufügen</h3>
 
-            <select id="monsterSelect"></select>
+            <div class="monsterForm">
 
-            <br><br>
+                <label>Monster</label>
+                <select id="monsterSelect"></select>
 
-            <button id="addMonsterConfirm">Hinzufügen</button>
-            <button id="closeMonsterModal">Abbrechen</button>
+                <label>Initiative</label>
+                <input id="monsterInit" type="number" value="0">
+
+                <label>HP</label>
+                <input id="monsterHP" type="number" value="1">
+
+            </div>
+
+            <div class="modalButtons">
+                <button id="addMonsterConfirm">Hinzufügen</button>
+                <button id="closeMonsterModal">Abbrechen</button>
+            </div>
 
         </div>
-
     </div>
     <table id="tracker">
 
@@ -49,7 +59,7 @@
                 <th>Name</th>
                 <th>Init</th>
                 <th>HP</th>
-                <th>Status</th>
+                <th>Delete</th>
             </tr>
         </thead>
 

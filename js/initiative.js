@@ -14,21 +14,21 @@ const roundDisplay = document.getElementById("round");
 let turnIndex = -1;
 let round = 1;
 
-function addRow(data = { name: "", hp: 0 }) {
+function addRow(data = { name: "", initiative: 0, hp: 0, status: "" }) {
 
     const row = document.createElement("tr");
 
     row.innerHTML = `
 <td contenteditable="true">${data.name}</td>
 
-<td contenteditable="true">0</td>
+<td contenteditable="true">${data.initiative ?? 0}</td>
 
 <td class="hpCell">
 <button class="hpBtn" data-dmg="-10">-10</button>
 <button class="hpBtn" data-dmg="-5">-5</button>
 <button class="hpBtn" data-dmg="-1">-1</button>
 
-<span class="hpValue">${data.hp}</span>
+<span class="hpValue">${data.hp ?? 0}</span>
 
 <button class="hpBtn" data-dmg="1">+1</button>
 <button class="hpBtn" data-dmg="5">+5</button>
@@ -36,17 +36,26 @@ function addRow(data = { name: "", hp: 0 }) {
 </td>
 
 <td contenteditable="true"></td>
+
+<td>
+<button class="deleteBtn">X</button>
+</td>
 `;
 
     tableBody.appendChild(row);
 
     setupHPButtons(row);
 
+    row.querySelector(".deleteBtn").onclick = () => row.remove();
+
 }
 
+let playersLoaded = false;
 async function loadPlayers() {
 
-    const { data, error } = await supabase
+    if (playersLoaded) return;
+
+    const { data } = await supabase
         .from("players")
         .select("*");
 
@@ -54,6 +63,8 @@ async function loadPlayers() {
         name: p.name,
         hp: p.hp
     }));
+
+    playersLoaded = true;
 
 }
 
@@ -155,6 +166,7 @@ async function endEncounter() {
     }
 
     clearEncounter();
+    playersLoaded = false
 
     alert("Encounter beendet und HP gespeichert");
 
@@ -175,7 +187,6 @@ function clearEncounter() {
 }
 
 let monstersLoaded = false;
-
 async function loadMonsters() {
 
     if (monstersLoaded) return;
@@ -206,22 +217,46 @@ async function loadMonsters() {
 
 }
 
+function getNextMonsterNumber(baseName) {
+
+    const rows = [...document.querySelectorAll("#tracker tbody tr")];
+
+    let count = 0;
+
+    rows.forEach(row => {
+
+        const name = row.children[0].textContent;
+
+        if (name.startsWith(baseName)) count++;
+
+    });
+
+    return count + 1;
+
+}
+
 document.getElementById("addMonsterConfirm").onclick = () => {
 
     const select = document.getElementById("monsterSelect");
 
-    const name = select.selectedOptions[0].dataset.name;
+    const baseName = select.selectedOptions[0].dataset.name;
+
+    const hp = parseInt(document.getElementById("monsterHP").value) || 0;
+    const initiative = parseInt(document.getElementById("monsterInit").value) || 0;
+
+    const number = getNextMonsterNumber(baseName);
+
+    const name = baseName + " " + number;
 
     addRow({
         name: name,
-        hp: 0
+        hp: hp,
+        initiative: initiative
     });
 
-    document.getElementById("monsterModal")
-        .classList.add("hidden");
+    document.getElementById("monsterModal").classList.add("hidden");
 
 };
-
 document.getElementById("addActor").onclick = () => {
     document.getElementById("monsterModal")
         .classList.remove("hidden");

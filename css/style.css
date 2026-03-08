@@ -70,10 +70,24 @@ justify-content:center;
 align-items:center;
 }
 
+.monsterForm{
+display:grid;
+grid-template-columns:120px 1fr;
+gap:8px;
+margin-bottom:15px;
+}
+
 .modalContent{
 background:white;
 padding:20px;
 border-radius:8px;
+min-width:320px;
+}
+
+.modalButtons{
+display:flex;
+gap:10px;
+justify-content:flex-end;
 }
 
 .hidden{
