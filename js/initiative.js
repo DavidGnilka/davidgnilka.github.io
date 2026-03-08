@@ -46,6 +46,7 @@ function addRow(data = { name: "", initiative: 0, hp: 0, status: "" }) {
 
     row.querySelector(".deleteBtn").onclick = () => row.remove();
 
+    return row;   // WICHTIG
 }
 
 let playersLoaded = false;
@@ -53,14 +54,24 @@ async function loadPlayers() {
 
     if (playersLoaded) return;
 
-    const { data } = await supabase
+    const { data, error } = await supabase
         .from("players")
         .select("*");
 
-    data.forEach(p => addRow({
-        name: p.name,
-        hp: p.hp
-    }));
+    showDbError(error);
+
+    if (!data) return;
+
+    data.forEach(p => {
+
+        const row = addRow({
+            name: p.name,
+            hp: p.hp
+        });
+
+        row.dataset.id = p.id;
+
+    });
 
     playersLoaded = true;
 
@@ -156,10 +167,12 @@ async function endEncounter() {
         const id = row.dataset.id;
         const hp = parseInt(row.querySelector(".hpValue").textContent) || 0;
 
-        await supabase
+        const { error } = await supabase
             .from("players")
             .update({ hp: hp })
             .eq("id", id);
+
+        showDbError(error);
 
     }
 
@@ -288,3 +301,17 @@ document.getElementById("endEncounter").onclick = endEncounter;
 document.getElementById("loadPlayers").onclick = loadPlayers;
 document.getElementById("sortInit").onclick = sortInitiative;
 document.getElementById("nextTurn").onclick = nextTurn;
+
+function showDbError(error) {
+
+    if (!error) return;
+
+    console.error("Supabase error:", error);
+
+    const box = document.getElementById("dbError");
+
+    box.textContent = error.message || JSON.stringify(error);
+
+    box.classList.remove("hidden");
+
+}

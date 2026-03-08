@@ -1,107 +1,116 @@
 body {
-font-family: Arial;
-margin: 40px;
+    font-family: Arial;
+    margin: 40px;
 }
 
 table {
-border-collapse: collapse;
-width: 600px;
+    border-collapse: collapse;
+    width: 600px;
 }
 
 th, td {
-border: 1px solid #ccc;
-padding: 8px;
-text-align: left;
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
 }
 
 td {
-cursor: text;
+    cursor: text;
 }
 
 .active {
-background-color: #ffeaa7;
+    background-color: #ffeaa7;
 }
 
 .controls {
-margin-bottom: 15px;
+    margin-bottom: 15px;
 }
 
 .active {
-background-color: #ffeaa7;
-font-weight: bold;
+    background-color: #ffeaa7;
+    font-weight: bold;
 }
 
 .turnInfo {
-margin-top: 10px;
-font-size: 18px;
+    margin-top: 10px;
+    font-size: 18px;
 }
 
 .hpCell {
-display: flex;
-gap: 4px;
-align-items: center;
+    display: flex;
+    gap: 4px;
+    align-items: center;
 }
 
 .hpBtn {
-padding: 2px 6px;
-font-size: 12px;
-cursor: pointer;
+    padding: 2px 6px;
+    font-size: 12px;
+    cursor: pointer;
 }
 
 .hpValue {
-min-width: 30px;
-text-align: center;
-font-weight: bold;
+    min-width: 30px;
+    text-align: center;
+    font-weight: bold;
 }
 
 .changed {
-background-color: #ffd6d6;
+    background-color: #ffd6d6;
 }
 
-.modalContent{
-background:white;
-padding:30px;
-border-radius:10px;
-min-width:420px;
-font-size:18px;
+.modalContent {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    min-width: 420px;
+    font-size: 18px;
 }
 
-.modalContent h2{
-margin-top:0;
-font-size:24px;
+.modalContent h2 {
+    margin-top: 0;
+    font-size: 24px;
 }
 
-.monsterForm{
-display:grid;
-grid-template-columns:160px 1fr;
-gap:12px;
-margin-bottom:20px;
+.monsterForm {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
 }
 
 .monsterForm input,
-.monsterForm select{
-font-size:16px;
-padding:6px;
+.monsterForm select {
+    font-size: 16px;
+    padding: 6px;
 }
 
-.diceDisplay{
-background:#f3f3f3;
-padding:6px 10px;
-border-radius:6px;
-font-weight:bold;
+.diceDisplay {
+    background: #f3f3f3;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-weight: bold;
 }
 
-.modalButtons{
-display:flex;
-gap:10px;
-justify-content:flex-end;
+.modalButtons {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
 }
 
-.modalButtons button{
-font-size:16px;
-padding:6px 14px;
+.modalButtons button {
+    font-size: 16px;
+    padding: 6px 14px;
 }
 
-.hidden{
-display:none;
+.dbError {
+    background: #ffdddd;
+    border: 1px solid #ff4444;
+    color: #900;
+    padding: 10px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.hidden {
+    display: none;
 }
