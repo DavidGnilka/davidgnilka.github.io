@@ -6,6 +6,18 @@ const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 
 const supabase = createClient(supabaseUrl, supabaseKey)
 
+const { data } = await supabase.auth.getSession();
+
+if (!data.session) {
+
+    document.getElementById("loginBox").style.display = "block";
+
+} else {
+
+    document.getElementById("loginBox").style.display = "none";
+
+}
+
 const tableBody = document.querySelector("#tracker tbody");
 
 const turnDisplay = document.getElementById("currentTurn");
@@ -301,6 +313,19 @@ document.getElementById("endEncounter").onclick = endEncounter;
 document.getElementById("loadPlayers").onclick = loadPlayers;
 document.getElementById("sortInit").onclick = sortInitiative;
 document.getElementById("nextTurn").onclick = nextTurn;
+document.getElementById("loginBtn").onclick = async () => {
+
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+    });
+
+    if (error) showDbError(error);
+
+};
 
 function showDbError(error) {
 
