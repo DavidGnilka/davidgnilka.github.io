@@ -1,4 +1,5 @@
 import { loadJSON } from "./loader.js";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const supabaseUrl = "https://YOURPROJECT.supabase.co"
 const supabaseKey = "YOUR_PUBLIC_ANON_KEY"
