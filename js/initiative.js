@@ -1,10 +1,10 @@
 import { loadJSON } from "./loader.js";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const supabaseUrl = "https://YOURPROJECT.supabase.co"
-const supabaseKey = "YOUR_PUBLIC_ANON_KEY"
+const supabaseUrl = "https://uanukgcpzvjkakohnogr.supabase.co"
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVhbnVrZ2NwenZqa2Frb2hub2dyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5MjE3ODgsImV4cCI6MjA4ODQ5Nzc4OH0.iqelGxHX-7eedCn7Hs8jgZwwCO_jZaewsIulFdNoq3Q"
 
-const supabase = window.supabase.createClient(supabaseUrl, supabaseKey)
+const supabase = createClient(supabaseUrl, supabaseKey)
 
 const tableBody = document.querySelector("#tracker tbody");
 
