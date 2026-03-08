@@ -174,7 +174,11 @@ function clearEncounter() {
 
 }
 
+let monstersLoaded = false;
+
 async function loadMonsters() {
+
+    if (monstersLoaded) return;
 
     const { data } = await supabase
         .from("monsters")
@@ -182,24 +186,23 @@ async function loadMonsters() {
 
     const select = document.getElementById("monsterSelect");
 
-    select.innerHTML = "";
-
     data.forEach(monster => {
 
         const option = document.createElement("option");
 
         option.value = monster.id;
-
         option.textContent =
-            monster.name +
-            " (HP " + monster.hp_dice +
-            ", Init " + monster.initiative_dice + ")";
+            monster.name + " (" +
+            monster.hp_dice + " / " +
+            monster.initiative_dice + ")";
 
         option.dataset.name = monster.name;
 
         select.appendChild(option);
 
     });
+
+    monstersLoaded = true;
 
 }
 
